@@ -93,12 +93,27 @@ ggplot( pharmacoData, aes( log2(pharmacoData$viability) ) ) +
 
 1. Create a scatterplot for each drug comparing the AUC in GDSC and CCLE for all cell lines (hint: code from Tutorial 2 may help).
 
-```{R}
+```{r}
 
+library(ggplot2)
+  ggplot(cellLinesSummary,aes(x=auc_GDSC, y=auc_CCLE)) +
+    geom_point(cex=0.5) +
+    xlab("GDSC AUC") +
+    ylab("CCLE AUC") + facet_wrap(facets=~drug)
 ```
 
-2. Calculate correlation coefficients of the AUC in GDSC and CCLE for each drug (hint: code from Tutorial 2 may help). 
 
+2. Calculate correlation coefficients of the AUC in GDSC and CCLE for each drug (hint: code from Tutorial 2 may help). 
+``` {r}
+x <- rnorm(50)
+perfect <- data.frame(x=x, y=x)
+cor.coef <- round(cor(cellLinesSummary$auc_GDSC, cellLinesSummary$auc_CCLE),2)
+ggplot(data=cellLinesSummary, aes(x=x,y=y)) +
+  geom_point() +
+  ggtitle(paste0("Correlation coefficient = ", cor.coef)) + 
+  geom_smooth(method='lm', se=FALSE)
+
+```
 3. Based on the scatterplot and correlation values, would you say that they tend to agree? Why or why not?
 
 4. Does the AUC or IC50 suggest more agreement between the studies? 
